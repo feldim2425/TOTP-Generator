@@ -199,13 +199,14 @@ public class SaveFile {
 				}
 				if(!read(f)) return false;
 				save = f;
+				if(MainUI.window != null)MainUI.window.reinitTags();
 				return true;
 			} catch (IOException e) {
 				e.printStackTrace();
 				return false;
 			}
 		}
-		return false;
+		return Main.doneInit;
 	}
 	
 	public static List<EntryTag> getTagList(){
