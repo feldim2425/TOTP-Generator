@@ -13,6 +13,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JToggleButton;
 
+import com.feldim2425.OTPGen.SaveFile;
 import com.feldim2425.OTPGen.codegen.CodeFactory;
 import com.feldim2425.OTPGen.ui.event.MainHandler;
 import com.feldim2425.OTPGen.ui.widget.PanelList;
@@ -44,6 +45,7 @@ public class MainUI {
 	
 	private JRadioButtonMenuItem rdbtSAll;
 	private JRadioButtonMenuItem rdbtSStd;
+	private JRadioButtonMenuItem rdbtnNTag;
 
 	/**
 	 * Launch the application.
@@ -118,6 +120,10 @@ public class MainUI {
 		rdbtSStd.setSelected(true);
 		mnShow.add(rdbtSStd);
 		
+		rdbtnNTag = new JRadioButtonMenuItem("No Tags");
+		mnShow.add(rdbtnNTag);
+		rdbtnNTag.addActionListener(handler);
+		
 		mnShow.addSeparator();
 		
 		mntmEditTag = new JMenuItem("Edit Tags");
@@ -142,5 +148,26 @@ public class MainUI {
 		tgbtnRun.setBounds(73, 26, 90, 20);
 		frame.getContentPane().add(tgbtnRun);
 		tgbtnRun.addActionListener(handler);
+		
+		initTags();
+	}
+	
+	private void initTags() {
+		int s2 = SaveFile.getTagList().size();
+		for(int i=0;i<s2;i++){
+			JRadioButtonMenuItem rdb = new JRadioButtonMenuItem(SaveFile.getTagList().get(i).getName());
+			mnShow.add(rdb);
+			rdb.addActionListener(handler);
+		}
+	}
+
+	public void reinitTags(){
+		mnShow.removeAll();
+		mnShow.add(rdbtSAll);
+		mnShow.add(rdbtSStd);
+		mnShow.add(rdbtnNTag);
+		mnShow.addSeparator();
+		rdbtSStd.setSelected(true);
+		initTags();
 	}
 }
