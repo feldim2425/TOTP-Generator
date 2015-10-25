@@ -31,6 +31,10 @@ public class EntryTag {
 		this.stdview = stdview;
 	}
 	
+	public EntryTag copy(){
+		return new EntryTag(name,stdview);
+	}
+	
 	public JsonObject toJson(){
 		JsonObjectBuilder obj = Json.createObjectBuilder();
 		obj.add("Name", this.name);
@@ -53,4 +57,5 @@ public class EntryTag {
 		tag.setStdview(json.getBoolean("StdView"));
 		return tag;
 	}
+	
 }

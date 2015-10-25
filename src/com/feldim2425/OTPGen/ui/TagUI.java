@@ -6,6 +6,7 @@ import java.awt.Point;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -14,10 +15,12 @@ import javax.swing.border.EmptyBorder;
 
 import com.feldim2425.OTPGen.SaveFile;
 import com.feldim2425.OTPGen.ui.event.TagHandler;
+
 import javax.swing.JLabel;
+
 import java.awt.Font;
 
-public class TagUI extends JFrame {
+public class TagUI extends JDialog {
 	
 	private static final long serialVersionUID = 941268257733743455L;
 	
@@ -57,6 +60,10 @@ public class TagUI extends JFrame {
 	 * Create the frame.
 	 */
 	public TagUI() {
+		super(MainUI.window.frame);
+		
+		handler.initLists();
+		
 		int posX = 100;
 		int posY = 100;
 		if(MainUI.window!=null){
@@ -139,9 +146,9 @@ public class TagUI extends JFrame {
 	
 	public void initList(){
 		DefaultListModel<String> lmod= new DefaultListModel<String>();
-		int s = SaveFile.getTagList().size();
+		int s = handler.tags.size();
 		for(int i=0;i<s;i++){
-			lmod.addElement(SaveFile.getTagList().get(i).getName());
+			lmod.addElement(handler.tags.get(i).getName());
 		}
 		list.setModel(lmod);
 	}

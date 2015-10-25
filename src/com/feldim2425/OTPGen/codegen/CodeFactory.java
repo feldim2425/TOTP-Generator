@@ -21,12 +21,12 @@ public class CodeFactory{
 		if(Main.doneInit) updateUI();
 	}
 	
-	public static void startCodeTimer(){
+	public static void startCodeTimer(){	//Start the timer thread
 		timer = new Thread(new CodeTimer());
 		timer.start();
 	}
 	
-	public static void stopCodeTimer(){
+	public static void stopCodeTimer(){		//Stop the timer thread
 		timer.interrupt();
 	}
 	
@@ -46,6 +46,5 @@ public class CodeFactory{
 		{
 			MainUI.window.scrollPane.addToList(clist.get(i));
 		}
-		//MainUI.window.codelist.setModel(cmodel);
 	}
 }

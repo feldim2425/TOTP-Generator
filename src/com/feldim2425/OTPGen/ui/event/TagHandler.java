@@ -2,17 +2,20 @@ package com.feldim2425.OTPGen.ui.event;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import com.feldim2425.OTPGen.SaveFile;
+import com.feldim2425.OTPGen.ui.MainUI;
 import com.feldim2425.OTPGen.ui.TagUI;
 import com.feldim2425.OTPGen.utils.EntryTag;
 
 public class TagHandler implements ActionListener, ListSelectionListener {
 	
 	private TagUI ui;
+	public ArrayList<EntryTag> tags = new ArrayList<EntryTag>();
 	
 	public TagHandler(TagUI ui){
 		this.ui=ui;
@@ -24,7 +27,9 @@ public class TagHandler implements ActionListener, ListSelectionListener {
 			ui.dispose();
 		}
 		else if(e.getSource().equals(ui.btnOk)){
+			saveLists();
 			SaveFile.saveAll(SaveFile.save);
+			MainUI.window.reinitTags();
 			ui.dispose();
 		}
 		else if(e.getSource().equals(ui.btnNewTag)){
@@ -41,7 +46,7 @@ public class TagHandler implements ActionListener, ListSelectionListener {
 			String name = ui.txtRename.getText();
 			if(name.matches("[A-Za-z0-9_]*") && name.length()<=16 && name.length()>0 && !name.startsWith("_")){
 				if(ui.list.getSelectedValue()==null){
-					SaveFile.getTagList().add(new EntryTag(name, ui.chckbxShowInStandart.isSelected()));
+					tags.add(new EntryTag(name, ui.chckbxShowInStandart.isSelected()));
 				}
 				else{
 					tagByName(ui.list.getSelectedValue()).setName(name);
@@ -56,7 +61,7 @@ public class TagHandler implements ActionListener, ListSelectionListener {
 		}
 		else if(e.getSource().equals(ui.btnRemTag)){
 			if(ui.list.getSelectedValue()!=null){
-				SaveFile.getTagList().remove(tagByName(ui.list.getSelectedValue()));
+				tags.remove(tagByName(ui.list.getSelectedValue()));
 				ui.initList();
 				ui.list.clearSelection();
 			}
@@ -83,10 +88,10 @@ public class TagHandler implements ActionListener, ListSelectionListener {
 	}
 	
 	private EntryTag tagByName(String name){
-		int size = SaveFile.getTagList().size();
+		int size = tags.size();
 		for(int i=0;i<size;i++){
-			if(SaveFile.getTagList().get(i).getName().equals(name))
-				return SaveFile.getTagList().get(i);
+			if(tags.get(i).getName().equals(name))
+				return tags.get(i);
 		}
 		return null;
 	}
@@ -99,6 +104,18 @@ public class TagHandler implements ActionListener, ListSelectionListener {
 		ui.chckbxShowInStandart.setEnabled(false);
 		ui.chckbxShowInStandart.setSelected(false);
 		ui.btnRemTag.setEnabled(false);
+	}
+	
+	public void initLists(){
+		int size = SaveFile.getTagList().size();
+		for(int i=0;i<size;i++){
+			tags.add(SaveFile.getTagList().get(i).copy());
+		}
+	}
+	
+	public void saveLists(){
+		SaveFile.getTagList().clear();
+		SaveFile.getTagList().addAll(tags);
 	}
 
 }
