@@ -16,6 +16,7 @@ import javax.swing.JRadioButtonMenuItem;
 
 import com.feldim2425.OTPGen.Main;
 import com.feldim2425.OTPGen.SaveFile;
+import com.feldim2425.OTPGen.ui.CodeEditUI;
 import com.feldim2425.OTPGen.ui.MainUI;
 import com.feldim2425.OTPGen.ui.TagUI;
 
@@ -88,6 +89,8 @@ public class MainHandler implements WindowListener, ComponentListener, ActionLis
 				MainUI.window.tgbtnRun.setText("Pause");
 			else
 				MainUI.window.tgbtnRun.setText("Run");
+		}else if(e.getSource().equals(MainUI.window.btnAddCode)){
+			CodeEditUI.start(null);
 		}
 	}
 
@@ -100,10 +103,7 @@ public class MainHandler implements WindowListener, ComponentListener, ActionLis
 	}
 
 	@Override
-	public void componentRemoved(ContainerEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void componentRemoved(ContainerEvent e) {}
 	
 	/*---Other Functions----*/
 	

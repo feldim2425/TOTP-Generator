@@ -8,7 +8,7 @@ public class CodeTimer implements Runnable{
 	@Override
 	public void run() {
 		boolean run = true;
-		while(run){
+		while(run && !Thread.interrupted()){
 			try{
 				if(MainUI.window!=null && MainUI.window.tgbtnRun!=null && !MainUI.window.tgbtnRun.isSelected()){
 					int len = CodeFactory.clist.size();

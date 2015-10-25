@@ -1,6 +1,7 @@
 package com.feldim2425.OTPGen.ui;
 
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.Point;
 
 import javax.swing.DefaultListModel;
@@ -8,17 +9,14 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
-import com.feldim2425.OTPGen.SaveFile;
 import com.feldim2425.OTPGen.ui.event.TagHandler;
-
-import javax.swing.JLabel;
-
-import java.awt.Font;
 
 public class TagUI extends JDialog {
 	
@@ -38,12 +36,15 @@ public class TagUI extends JDialog {
 	public JButton btnRemTag;
 	private JLabel lblinfo1;
 	private JLabel lblinfo2;
-	private JLabel lblUnderlinesAreAllowed;
+	private JLabel lblinfo3;
+	private JLabel lblinfo4;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void start() {
+		if(MainUI.isEditing()) return;  //Return if there is already a edit Dialog
+		MainUI.setEditing(true);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -72,6 +73,7 @@ public class TagUI extends JDialog {
 			posY = p.y;
 		}
 		
+		addWindowListener(handler);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(posX, posY, 450, 300);
@@ -101,7 +103,7 @@ public class TagUI extends JDialog {
 		
 		chckbxShowInStandart = new JCheckBox("Show in Stantard View");
 		chckbxShowInStandart.setEnabled(false);
-		chckbxShowInStandart.setBounds(161, 144, 200, 30);
+		chckbxShowInStandart.setBounds(161, 158, 200, 30);
 		contentPane.add(chckbxShowInStandart);
 		chckbxShowInStandart.addActionListener(handler);
 		
@@ -116,6 +118,7 @@ public class TagUI extends JDialog {
 		btnCancel.addActionListener(handler);
 		
 		list = new JList<String>();
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setBounds(10, 12, 145, 250);
 		list.addListSelectionListener(handler);
 		contentPane.add(list);
@@ -127,18 +130,24 @@ public class TagUI extends JDialog {
 		
 		lblinfo1 = new JLabel("Max. 16 Characters");
 		lblinfo1.setFont(new Font("Dialog", Font.BOLD, 9));
-		lblinfo1.setBounds(161, 88, 172, 15);
+		lblinfo1.setBounds(161, 90, 172, 15);
 		contentPane.add(lblinfo1);
 		
 		lblinfo2 = new JLabel("No special characters like ?!+#-.,");
 		lblinfo2.setFont(new Font("Dialog", Font.BOLD, 9));
-		lblinfo2.setBounds(161, 100, 250, 15);
+		lblinfo2.setBounds(161, 105, 250, 15);
 		contentPane.add(lblinfo2);
 		
-		lblUnderlinesAreAllowed = new JLabel("Underlines are allowed but not as 1. character");
-		lblUnderlinesAreAllowed.setFont(new Font("Dialog", Font.BOLD, 9));
-		lblUnderlinesAreAllowed.setBounds(161, 115, 278, 15);
-		contentPane.add(lblUnderlinesAreAllowed);
+		lblinfo3 = new JLabel("Underlines are allowed but not as 1. character");
+		lblinfo3.setFont(new Font("Dialog", Font.BOLD, 9));
+		lblinfo3.setBounds(161, 120, 278, 15);
+		contentPane.add(lblinfo3);
+		
+		lblinfo4 = new JLabel("Existing names are not allowed");
+		lblinfo4.setFont(new Font("Dialog", Font.BOLD, 9));
+		lblinfo4.setBounds(161, 135, 278, 15);
+		contentPane.add(lblinfo4);
+		
 		btnRemTag.addActionListener(handler);
 		
 		initList();

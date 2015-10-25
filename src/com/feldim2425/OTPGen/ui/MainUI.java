@@ -26,7 +26,8 @@ public class MainUI {
 	public static final int MIN_WIN_WIDTH = 450;
 	public static final String STD_NAME = "TOTP Generator";
 	public static MainUI window;
-	
+	private static boolean editing = false;
+
 	public MainHandler handler = new MainHandler();
 	
 	public JFrame frame;
@@ -37,7 +38,7 @@ public class MainUI {
 	public JMenu mnTags;
 	public JMenu mnShow;
 	public JMenuItem mntmEditTag;
-	public JButton button;
+	public JButton btnAddCode;
 	public PanelList scrollPane;
 	public JMenuItem mntmNewF;
 	public JMenuItem mntmOpen;
@@ -131,11 +132,12 @@ public class MainUI {
 		mntmEditTag.addActionListener(handler);
 
 		
-		button = new JButton("+");
-		button.setForeground(Color.GREEN);
-		button.setFont(new Font("Dialog", Font.BOLD, 14));
-		button.setBounds(10, 26, 51, 20);
-		frame.getContentPane().add(button);
+		btnAddCode = new JButton("+");
+		btnAddCode.setForeground(Color.GREEN);
+		btnAddCode.setFont(new Font("Dialog", Font.BOLD, 14));
+		btnAddCode.setBounds(10, 26, 51, 20);
+		frame.getContentPane().add(btnAddCode);
+		btnAddCode.addActionListener(handler);
 		
 		scrollPane = new PanelList();
 		scrollPane.setBackground(Color.WHITE);
@@ -170,4 +172,13 @@ public class MainUI {
 		rdbtSStd.setSelected(true);
 		initTags();
 	}
+	
+	public static boolean isEditing() {
+		return editing;
+	}
+
+	public static void setEditing(boolean editing) {
+		MainUI.editing = editing;
+	}
+	
 }

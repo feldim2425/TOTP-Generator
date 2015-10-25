@@ -10,6 +10,10 @@ public class Main {
 	
 	public static boolean doneInit = false;
 	
+	/*
+	 * TODO: CodeEditUI Tag List set to toggle list
+	 * TODO: If you remove a tag remove it from all CodeEntrys.
+	 */
 	public static void main(String[] args) {
 		if(askFile()) return;
 		if(!SaveFile.selectSave()){

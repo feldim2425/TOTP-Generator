@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -24,6 +26,7 @@ import javax.swing.JSeparator;
 import org.apache.commons.codec.binary.Base32;
 
 import com.feldim2425.OTPGen.SaveFile;
+import com.feldim2425.OTPGen.ui.CodeEditUI;
 import com.feldim2425.OTPGen.ui.MainUI;
 
 public class CodeEntry extends JPanel implements ComponentListener, ActionListener {
@@ -36,8 +39,26 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 	private String secret;
 	private long nextCodeGen;
 	private JSeparator separator;
-	JButton btnRemove;
+	private JButton btnRemove;
+	private ArrayList<String> taglist = new ArrayList<String>();
+	private long lastCodeTime;
 	
+	public CodeEntry(String secret,String company, String user, List<String> tags) {
+		this(secret, company,user);
+		taglist.addAll(tags);
+	}
+	
+	public CodeEntry(String secret,String company, String user, String tag) {
+		this(secret,company,user);
+		String[] tags = tag.split(";");
+		for(int i=0;i<tags.length;i++){
+			taglist.add(tags[i]);
+		}
+	}
+	
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public CodeEntry(String secret,String company, String user) {
 		setBackground(new Color(204, 204, 255));
 		this.secret=secret;
@@ -65,7 +86,7 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 		add(progressBar);
 		
 		separator = new JSeparator();
-		separator.setBounds(0, 85, 280, 2);
+		separator.setBounds(0, 85, 326, 2);
 		add(separator);
 		
 		btnRemove = new JButton("-");
@@ -75,14 +96,18 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 		add(btnRemove);
 		btnRemove.addActionListener(this);
 		
-		btnNewButton = new JButton("Edit");
-		btnNewButton.setBounds(211, 56, 61, 20);
-		add(btnNewButton);
+		btnEdit = new JButton("Edit");
+		btnEdit.setBounds(211, 56, 61, 20);
+		add(btnEdit);
+		btnEdit.addActionListener(this);
 		
 		
 		addComponentListener(this);
 		
 		btnNewButton_1 = new JButton("QR");
+		btnNewButton_1.setToolTipText("Not impemented yet");
+		btnNewButton_1.setBackground(Color.GRAY);
+		btnNewButton_1.setEnabled(false);
 		btnNewButton_1.setBounds(271, 56, 55, 20);
 		add(btnNewButton_1);
 		
@@ -95,9 +120,15 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 	
 	public void update(int bar){
 		progressBar.setValue(bar);
-		if(System.currentTimeMillis()>=nextCodeGen){
-			nextCodeGen = System.currentTimeMillis()+(long)(30-CodeFactory.nextCodeCoutdown());
+		
+		if(System.currentTimeMillis()>nextCodeGen && CodeFactory.getTime()!=lastCodeTime){
+			nextCodeGen = System.currentTimeMillis()+(long)(30.3-CodeFactory.nextCodeCoutdown())*1000; // 30.3 to make sure that there is a new code.
+			lastCodeTime = CodeFactory.getTime();
+			label_1.setForeground(Color.BLUE);
 			generate();
+		}
+		else if(System.currentTimeMillis() > nextCodeGen-3000){
+			label_1.setForeground(Color.RED);
 		}
 	}
 	
@@ -105,13 +136,14 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 		Base32 code = new Base32();
 		byte[] decodedKey = code.decode(secret);
 		label_1.setText(String.format("%06d", TOTP.generateTOTP(decodedKey, CodeFactory.getTime(), 6,"HmacSHA1")));
+		
 	}
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JButton btnNewButton;
+	private JButton btnEdit;
 	private JButton btnNewButton_1;
 	private JButton btnCopy;
 
@@ -134,7 +166,7 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 		b.add("user", user);
 		b.add("company", company);
 		b.add("secret", secret);
-		b.add("tags", "");
+		b.add("tags", tagString());
 		return b.build();
 	}
 	
@@ -144,7 +176,17 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 		if(!obj.containsKey("secret") && !obj.get("secret").getValueType().equals(ValueType.STRING)) return null;
 		if(!obj.containsKey("tags") && !obj.get("tags").getValueType().equals(ValueType.STRING)) return null;
 		
-		return new CodeEntry(obj.getString("secret"),obj.getString("company"),obj.getString("user"));
+		return new CodeEntry(obj.getString("secret"),obj.getString("company"),obj.getString("user"),obj.getString("tags"));
+	}
+	
+	private String tagString() {
+		String s = "";
+		int size = taglist.size();
+		for(int i=0;i<size;i++){
+			if(i!=0) s+=";";
+			s+=taglist.get(i);
+		}
+		return s;
 	}
 
 	@Override
@@ -171,5 +213,38 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 			StringSelection selection = new StringSelection(this.label_1.getText());
 			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection,selection);
 		}
+		else if(e.getSource().equals(this.btnEdit)){
+			CodeEditUI.start(this);
+		}
+	}
+	
+	public String getCompany() {
+		return company;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
+		this.label.setText(company+" - "+user);
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+		this.label.setText(company+" - "+user);
+	}
+
+	public String getSecret() {
+		return secret;
+	}
+
+	public void setSecret(String secret) {
+		this.secret = secret;
+	}
+
+	public ArrayList<String> getTaglist() {
+		return taglist;
 	}
 }

@@ -2,6 +2,8 @@ package com.feldim2425.OTPGen.ui.event;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 import javax.swing.event.ListSelectionEvent;
@@ -12,7 +14,7 @@ import com.feldim2425.OTPGen.ui.MainUI;
 import com.feldim2425.OTPGen.ui.TagUI;
 import com.feldim2425.OTPGen.utils.EntryTag;
 
-public class TagHandler implements ActionListener, ListSelectionListener {
+public class TagHandler implements ActionListener, ListSelectionListener, WindowListener {
 	
 	private TagUI ui;
 	public ArrayList<EntryTag> tags = new ArrayList<EntryTag>();
@@ -20,7 +22,6 @@ public class TagHandler implements ActionListener, ListSelectionListener {
 	public TagHandler(TagUI ui){
 		this.ui=ui;
 	}
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource().equals(ui.btnCancel)){
@@ -45,10 +46,10 @@ public class TagHandler implements ActionListener, ListSelectionListener {
 		else if(e.getSource().equals(ui.btnRename)){
 			String name = ui.txtRename.getText();
 			if(name.matches("[A-Za-z0-9_]*") && name.length()<=16 && name.length()>0 && !name.startsWith("_")){
-				if(ui.list.getSelectedValue()==null){
+				if(ui.list.getSelectedValue()==null && tagByName(name)==null){
 					tags.add(new EntryTag(name, ui.chckbxShowInStandart.isSelected()));
 				}
-				else{
+				else if(ui.list.getSelectedValue()!=null && tagByName(name)==null){
 					tagByName(ui.list.getSelectedValue()).setName(name);
 				}
 				ui.initList();
@@ -117,5 +118,23 @@ public class TagHandler implements ActionListener, ListSelectionListener {
 		SaveFile.getTagList().clear();
 		SaveFile.getTagList().addAll(tags);
 	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		MainUI.setEditing(false);
+	}
+	
+	@Override
+	public void windowIconified(WindowEvent e) {}
+	@Override
+	public void windowDeiconified(WindowEvent e) {}
+	@Override
+	public void windowActivated(WindowEvent e) {}
+	@Override
+	public void windowDeactivated(WindowEvent e) {}
+	@Override
+	public void windowOpened(WindowEvent e) {}
+	@Override
+	public void windowClosing(WindowEvent e) {}
 
 }
