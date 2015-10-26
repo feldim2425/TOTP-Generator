@@ -198,7 +198,7 @@ public class SaveFile {
 				}
 				if(!read(f)) return false;
 				save = f;
-				if(MainUI.window != null)MainUI.window.reinitTags();
+				if(MainUI.window != null) MainUI.window.reinitTags("#");
 				return true;
 			} catch (IOException e) {
 				e.printStackTrace();

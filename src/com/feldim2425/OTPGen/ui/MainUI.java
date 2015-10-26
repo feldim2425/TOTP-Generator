@@ -113,17 +113,17 @@ public class MainUI {
 		mnTags.add(mnShow);
 		
 		rdbtSAll = new JRadioButtonMenuItem("All");
-		rdbtSAll.addActionListener(handler);
+		rdbtSAll.addItemListener(handler);
 		mnShow.add(rdbtSAll);
 		
 		rdbtSStd = new JRadioButtonMenuItem("Standard");
-		rdbtSStd.addActionListener(handler);
+		rdbtSStd.addItemListener(handler);
 		rdbtSStd.setSelected(true);
 		mnShow.add(rdbtSStd);
 		
 		rdbtnNTag = new JRadioButtonMenuItem("No Tags");
 		mnShow.add(rdbtnNTag);
-		rdbtnNTag.addActionListener(handler);
+		rdbtnNTag.addItemListener(handler);
 		
 		mnShow.addSeparator();
 		
@@ -151,26 +151,27 @@ public class MainUI {
 		frame.getContentPane().add(tgbtnRun);
 		tgbtnRun.addActionListener(handler);
 		
-		initTags();
+		initTags("#");
 	}
 	
-	private void initTags() {
+	private void initTags(String view) {
 		int s2 = SaveFile.getTagList().size();
 		for(int i=0;i<s2;i++){
 			JRadioButtonMenuItem rdb = new JRadioButtonMenuItem(SaveFile.getTagList().get(i).getName());
 			mnShow.add(rdb);
-			rdb.addActionListener(handler);
+			rdb.addItemListener(handler);
 		}
+		selectView(view);
 	}
 
-	public void reinitTags(){
+	public void reinitTags(String view){
 		mnShow.removeAll();
 		mnShow.add(rdbtSAll);
 		mnShow.add(rdbtSStd);
 		mnShow.add(rdbtnNTag);
 		mnShow.addSeparator();
-		rdbtSStd.setSelected(true);
-		initTags();
+		
+		initTags(view);
 	}
 	
 	public static boolean isEditing() {
@@ -179,6 +180,44 @@ public class MainUI {
 
 	public static void setEditing(boolean editing) {
 		MainUI.editing = editing;
+	}
+	
+	public String selectedView(){
+		int size = mnShow.getItemCount();
+		for(int i=0;i<size;i++){
+			if(!(mnShow.getItem(i) instanceof JRadioButtonMenuItem)) continue;
+			if(!((JRadioButtonMenuItem)mnShow.getItem(i)).isSelected()) continue;
+			if(mnShow.getItem(i).equals(rdbtSAll)) return "*";
+			else if(mnShow.getItem(i).equals(rdbtSStd)) return "#";
+			else if(mnShow.getItem(i).equals(rdbtnNTag)) return "~";
+			else return mnShow.getItem(i).getText();
+		}
+		return null;
+	}
+	
+	public boolean selectView(String view){
+		if(view.equals("*")){
+			rdbtSAll.setSelected(true);
+			return true;
+		}
+		else if(view.equals("#")){
+			rdbtSStd.setSelected(true);
+			return true;
+		}
+		else if(view.equals("~")){
+			rdbtnNTag.setSelected(true);
+			return true;
+		}
+		else{
+			int size = mnShow.getItemCount();
+			for(int i=0;i<size;i++){
+				if(!(mnShow.getItem(i) instanceof JRadioButtonMenuItem)) continue;
+				if(!((JRadioButtonMenuItem)mnShow.getItem(i)).getText().equals(view)) continue;
+				((JRadioButtonMenuItem)mnShow.getItem(i)).setSelected(true);
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }

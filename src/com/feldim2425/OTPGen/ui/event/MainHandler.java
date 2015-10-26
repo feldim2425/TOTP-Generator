@@ -7,6 +7,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.HashMap;
@@ -20,7 +22,7 @@ import com.feldim2425.OTPGen.ui.CodeEditUI;
 import com.feldim2425.OTPGen.ui.MainUI;
 import com.feldim2425.OTPGen.ui.TagUI;
 
-public class MainHandler implements WindowListener, ComponentListener, ActionListener, ContainerListener {
+public class MainHandler implements WindowListener, ComponentListener, ActionListener, ContainerListener, ItemListener {
 	
 	private HashMap<Component,Integer> hScale = new HashMap<Component,Integer>();
 	private HashMap<Component,Integer> wScale = new HashMap<Component,Integer>();
@@ -71,14 +73,6 @@ public class MainHandler implements WindowListener, ComponentListener, ActionLis
 		if(e.getSource().equals(MainUI.window.mntmEditTag)){
 			TagUI.start();
 		}
-		else if((e.getSource() instanceof JRadioButtonMenuItem) && 
-				hasComponent(MainUI.window.mnShow.getMenuComponents(), (Component) e.getSource())){
-			Component[] comp = MainUI.window.mnShow.getMenuComponents();
-			for(int i=0;i<comp.length;i++){
-				if((comp[i] instanceof JRadioButtonMenuItem) && !comp[i].equals(e.getSource()))
-					((JRadioButtonMenuItem)comp[i]).setSelected(false);
-			}
-		}
 		else if(e.getSource().equals(MainUI.window.mntmOpen)){
 			if(!SaveFile.selectSave()){
 				SaveFile.curruptedFile();
@@ -105,6 +99,18 @@ public class MainHandler implements WindowListener, ComponentListener, ActionLis
 	@Override
 	public void componentRemoved(ContainerEvent e) {}
 	
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		if(MainUI.window==null) return;
+		if((e.getSource() instanceof JRadioButtonMenuItem) && e.getStateChange()==ItemEvent.SELECTED &&
+				hasComponent(MainUI.window.mnShow.getMenuComponents(), (Component) e.getSource())){
+			Component[] comp = MainUI.window.mnShow.getMenuComponents();
+			for(int i=0;i<comp.length;i++){
+				if((comp[i] instanceof JRadioButtonMenuItem) && !comp[i].equals(e.getSource()))
+					((JRadioButtonMenuItem)comp[i]).setSelected(false);
+			}
+		}
+	}
 	/*---Other Functions----*/
 	
 	private boolean hasComponent(Component[] comp,Component c){
@@ -141,4 +147,5 @@ public class MainHandler implements WindowListener, ComponentListener, ActionLis
 			c.setSize(w,nh-dh);
 		}
 	}
+
 }

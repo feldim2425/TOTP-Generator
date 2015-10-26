@@ -5,11 +5,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import com.feldim2425.OTPGen.SaveFile;
+import com.feldim2425.OTPGen.codegen.CodeFactory;
 import com.feldim2425.OTPGen.ui.MainUI;
 import com.feldim2425.OTPGen.ui.TagUI;
 import com.feldim2425.OTPGen.utils.EntryTag;
@@ -18,6 +21,7 @@ public class TagHandler implements ActionListener, ListSelectionListener, Window
 	
 	private TagUI ui;
 	public ArrayList<EntryTag> tags = new ArrayList<EntryTag>();
+	HashMap<String,String> nameTable = new HashMap<String, String>();
 	
 	public TagHandler(TagUI ui){
 		this.ui=ui;
@@ -28,9 +32,7 @@ public class TagHandler implements ActionListener, ListSelectionListener, Window
 			ui.dispose();
 		}
 		else if(e.getSource().equals(ui.btnOk)){
-			saveLists();
-			SaveFile.saveAll(SaveFile.save);
-			MainUI.window.reinitTags();
+			doChanges();
 			ui.dispose();
 		}
 		else if(e.getSource().equals(ui.btnNewTag)){
@@ -50,7 +52,10 @@ public class TagHandler implements ActionListener, ListSelectionListener, Window
 					tags.add(new EntryTag(name, ui.chckbxShowInStandart.isSelected()));
 				}
 				else if(ui.list.getSelectedValue()!=null && tagByName(name)==null){
-					tagByName(ui.list.getSelectedValue()).setName(name);
+					EntryTag tag = tagByName(ui.list.getSelectedValue());
+					String orig = getOriginalName(tag.getName());
+					nameTable.put((orig==null) ? tag.getName() : orig, name);
+					tag.setName(name);
 				}
 				ui.initList();
 			}
@@ -62,7 +67,10 @@ public class TagHandler implements ActionListener, ListSelectionListener, Window
 		}
 		else if(e.getSource().equals(ui.btnRemTag)){
 			if(ui.list.getSelectedValue()!=null){
-				tags.remove(tagByName(ui.list.getSelectedValue()));
+				EntryTag tag = tagByName(ui.list.getSelectedValue());
+				String orig = getOriginalName(tag.getName());
+				nameTable.put((orig==null) ? tag.getName() : orig, null);
+				tags.remove(tag);
 				ui.initList();
 				ui.list.clearSelection();
 			}
@@ -117,6 +125,39 @@ public class TagHandler implements ActionListener, ListSelectionListener, Window
 	public void saveLists(){
 		SaveFile.getTagList().clear();
 		SaveFile.getTagList().addAll(tags);
+	}
+	
+	private String getOriginalName(String rename){
+		Iterator<String> keys = nameTable.keySet().iterator();
+		while(keys.hasNext()){
+			String key = keys.next();
+			if(nameTable.get(key).equals(rename)) return key;
+		}
+		return null;
+	}
+	
+	private void doChanges(){
+		Iterator<String> keys = nameTable.keySet().iterator();			
+		int size = CodeFactory.clist.size();
+		while(keys.hasNext()){
+			String key = keys.next();
+			for(int i=0;i<size;i++) 		//Rename Tags in the codes lists
+				if(CodeFactory.clist.get(i).getTaglist().remove(key) && nameTable.get(key)!=null)
+					CodeFactory.clist.get(i).getTaglist().add(nameTable.get(key));
+		}
+		
+		String newview = null;
+		String view = MainUI.window.selectedView();
+		System.out.println(view);
+		if(nameTable.containsKey(view)){
+			newview = nameTable.get(view);
+			newview = (newview==null) ? "#" : newview;
+		}
+		else newview = view;
+		
+		saveLists();
+		SaveFile.saveAll(SaveFile.save);
+		MainUI.window.reinitTags((newview==null)?"#":newview);
 	}
 
 	@Override
