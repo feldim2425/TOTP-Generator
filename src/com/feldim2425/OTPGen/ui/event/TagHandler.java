@@ -157,6 +157,7 @@ public class TagHandler implements ActionListener, ListSelectionListener, Window
 		saveLists();
 		SaveFile.saveAll(SaveFile.save);
 		MainUI.window.reinitTags((newview==null)?"#":newview);
+		if(newview==view)CodeFactory.updateUI();
 	}
 
 	@Override

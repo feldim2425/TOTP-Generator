@@ -1,6 +1,7 @@
 package com.feldim2425.OTPGen.codegen;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.feldim2425.OTPGen.Main;
 import com.feldim2425.OTPGen.SaveFile;
@@ -43,6 +44,8 @@ public class CodeFactory{
 	
 	public static void updateUI(){
 		String filter = MainUI.window.selectedView();
+		ArrayList<Integer> oldv = new ArrayList<Integer>();
+		oldv.addAll(visible);
 		
 		int len = clist.size();
 		MainUI.window.scrollPane.removeAll();
@@ -55,6 +58,30 @@ public class CodeFactory{
 				MainUI.window.scrollPane.addToList(clist.get(i));
 				if(MainUI.window!=null && !MainUI.window.tgbtnRun.isSelected())
 					clist.get(i).update((int) ((30D-CodeFactory.nextCodeCoutdown())*10D) , true);
+			}
+		}
+		
+		updateCodes(oldv);
+	}
+	
+	public static void updateCodes(List<Integer> old, List<Integer> newlist, List<Integer> force){
+		force = (force==null) ? new ArrayList<Integer>() : force;
+		int s = newlist.size();
+		for(int i=0;i<s;i++){
+			if(!old.contains(newlist.get(i)) && clist.contains(newlist.get(i))){
+				clist.get(newlist.get(i)).update((int) ((30D-CodeFactory.nextCodeCoutdown())*10D) , true);
+				force.remove(newlist.get(i));
+			}
+		}
+		
+		if(!force.isEmpty()) updateCodes(force);
+	}
+	
+	public static void updateCodes(List<Integer> update){
+		int s=update.size();
+		for(int i=0;i<s;i++){
+			if(clist.contains(update.get(i))){
+				clist.get(update.get(i)).update((int) ((30D-CodeFactory.nextCodeCoutdown())*10D) , true);
 			}
 		}
 	}
