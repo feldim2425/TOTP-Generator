@@ -148,7 +148,6 @@ public class TagHandler implements ActionListener, ListSelectionListener, Window
 		
 		String newview = null;
 		String view = MainUI.window.selectedView();
-		System.out.println(view);
 		if(nameTable.containsKey(view)){
 			newview = nameTable.get(view);
 			newview = (newview==null) ? "#" : newview;

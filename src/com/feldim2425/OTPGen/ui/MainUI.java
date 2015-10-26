@@ -117,6 +117,7 @@ public class MainUI {
 		mnShow.add(rdbtSAll);
 		
 		rdbtSStd = new JRadioButtonMenuItem("Standard");
+		rdbtSStd.setEnabled(false);
 		rdbtSStd.addItemListener(handler);
 		rdbtSStd.setSelected(true);
 		mnShow.add(rdbtSStd);

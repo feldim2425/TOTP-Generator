@@ -18,6 +18,7 @@ import javax.swing.JRadioButtonMenuItem;
 
 import com.feldim2425.OTPGen.Main;
 import com.feldim2425.OTPGen.SaveFile;
+import com.feldim2425.OTPGen.codegen.CodeFactory;
 import com.feldim2425.OTPGen.ui.CodeEditUI;
 import com.feldim2425.OTPGen.ui.MainUI;
 import com.feldim2425.OTPGen.ui.TagUI;
@@ -105,10 +106,14 @@ public class MainHandler implements WindowListener, ComponentListener, ActionLis
 		if((e.getSource() instanceof JRadioButtonMenuItem) && e.getStateChange()==ItemEvent.SELECTED &&
 				hasComponent(MainUI.window.mnShow.getMenuComponents(), (Component) e.getSource())){
 			Component[] comp = MainUI.window.mnShow.getMenuComponents();
+			((Component) e.getSource()).setEnabled(false);
 			for(int i=0;i<comp.length;i++){
-				if((comp[i] instanceof JRadioButtonMenuItem) && !comp[i].equals(e.getSource()))
+				if((comp[i] instanceof JRadioButtonMenuItem) && !comp[i].equals(e.getSource())){
 					((JRadioButtonMenuItem)comp[i]).setSelected(false);
+					comp[i].setEnabled(true);
+				}
 			}
+			CodeFactory.updateUI();
 		}
 	}
 	/*---Other Functions----*/

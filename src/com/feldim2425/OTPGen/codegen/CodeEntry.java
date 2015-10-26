@@ -37,11 +37,9 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 	private JLabel label_1;
 	private JProgressBar progressBar;
 	private String secret;
-	private long nextCodeGen;
 	private JSeparator separator;
 	private JButton btnRemove;
 	private ArrayList<String> taglist = new ArrayList<String>();
-	private long lastCodeTime;
 	
 	public CodeEntry(String secret,String company, String user, List<String> tags) {
 		this(secret, company,user);
@@ -82,7 +80,6 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 		progressBar.setForeground(Color.DARK_GRAY);
 		progressBar.setBounds(12, 62, 133, 14);
 		progressBar.setMaximum(300);
-		progressBar.setValue((int) ((30D-CodeFactory.nextCodeCoutdown())*10D));
 		add(progressBar);
 		
 		separator = new JSeparator();
@@ -116,18 +113,18 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 		add(btnCopy);
 		generate();
 		btnCopy.addActionListener(this);
+		
+		update((int) ((30D-CodeFactory.nextCodeCoutdown())*10D) , true);
 	}
 	
-	public void update(int bar){
+	synchronized public void update(int bar, boolean regen){
 		progressBar.setValue(bar);
 		
-		if(System.currentTimeMillis()>nextCodeGen && CodeFactory.getTime()!=lastCodeTime){
-			nextCodeGen = System.currentTimeMillis()+(long)(30.3-CodeFactory.nextCodeCoutdown())*1000; // 30.3 to make sure that there is a new code.
-			lastCodeTime = CodeFactory.getTime();
+		if(regen){
 			label_1.setForeground(Color.BLUE);
 			generate();
 		}
-		else if(System.currentTimeMillis() > nextCodeGen-3000){
+		if(bar<30){
 			label_1.setForeground(Color.RED);
 		}
 	}
@@ -136,7 +133,6 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 		Base32 code = new Base32();
 		byte[] decodedKey = code.decode(secret);
 		label_1.setText(String.format("%06d", TOTP.generateTOTP(decodedKey, CodeFactory.getTime(), 6,"HmacSHA1")));
-		
 	}
 
 	/**
