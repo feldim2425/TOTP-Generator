@@ -1,6 +1,11 @@
 # TOTP-Generator
 A Java TOTP-Generator with a UI
 
+Beta Download: http://cur.lv/rh5b2
+
+####TODO:
+  * Secret Encryption
+
 ####Required Libraries
  * commons-codec-1.10.jar
  * commons-io-2.4.jar
