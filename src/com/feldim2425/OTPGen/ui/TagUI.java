@@ -17,6 +17,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
 import com.feldim2425.OTPGen.ui.event.TagHandler;
+import javax.swing.SpringLayout;
 
 public class TagUI extends JDialog {
 	
@@ -80,72 +81,107 @@ public class TagUI extends JDialog {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
 		setTitle(MainUI.STD_NAME+" : Edit Tags");
+		SpringLayout sl_contentPane = new SpringLayout();
+		contentPane.setLayout(sl_contentPane);
 		
 		btnNewTag = new JButton("New Tag");
-		btnNewTag.setBounds(161, 12, 112, 30);
+		sl_contentPane.putConstraint(SpringLayout.NORTH, btnNewTag, 12, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.WEST, btnNewTag, 161, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, btnNewTag, 42, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.EAST, btnNewTag, 273, SpringLayout.WEST, contentPane);
 		contentPane.add(btnNewTag);
 		btnNewTag.addActionListener(handler);
 		
 		txtRename = new JTextField();
+		sl_contentPane.putConstraint(SpringLayout.NORTH, txtRename, 58, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.WEST, txtRename, 161, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, txtRename, 88, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.EAST, txtRename, 304, SpringLayout.WEST, contentPane);
 		txtRename.setEnabled(false);
 		txtRename.setText("TagName");
-		txtRename.setBounds(161, 58, 143, 30);
 		contentPane.add(txtRename);
 		txtRename.setColumns(10);
 		
 		btnRename = new JButton("Rename");
+		sl_contentPane.putConstraint(SpringLayout.NORTH, btnRename, 57, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.WEST, btnRename, 316, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, btnRename, 87, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.EAST, btnRename, 430, SpringLayout.WEST, contentPane);
 		btnRename.setEnabled(false);
-		btnRename.setBounds(316, 57, 114, 30);
 		contentPane.add(btnRename);
 		btnRename.addActionListener(handler);
 		
 		chckbxShowInStandart = new JCheckBox("Show in Stantard View");
+		sl_contentPane.putConstraint(SpringLayout.NORTH, chckbxShowInStandart, 158, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.WEST, chckbxShowInStandart, 161, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, chckbxShowInStandart, 188, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.EAST, chckbxShowInStandart, 361, SpringLayout.WEST, contentPane);
 		chckbxShowInStandart.setEnabled(false);
-		chckbxShowInStandart.setBounds(161, 158, 200, 30);
 		contentPane.add(chckbxShowInStandart);
 		chckbxShowInStandart.addActionListener(handler);
 		
 		btnOk = new JButton("OK");
-		btnOk.setBounds(167, 215, 110, 25);
+		sl_contentPane.putConstraint(SpringLayout.NORTH, btnOk, 215, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.WEST, btnOk, 167, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.EAST, btnOk, 277, SpringLayout.WEST, contentPane);
 		contentPane.add(btnOk);
 		btnOk.addActionListener(handler);
 		
 		btnCancel = new JButton("Cancel");
-		btnCancel.setBounds(283, 215, 110, 25);
+		sl_contentPane.putConstraint(SpringLayout.NORTH, btnCancel, 215, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.WEST, btnCancel, 283, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.EAST, btnCancel, 393, SpringLayout.WEST, contentPane);
 		contentPane.add(btnCancel);
 		btnCancel.addActionListener(handler);
 		
 		list = new JList<String>();
+		sl_contentPane.putConstraint(SpringLayout.NORTH, list, 12, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.WEST, list, 10, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, list, 262, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.EAST, list, 155, SpringLayout.WEST, contentPane);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setBounds(10, 12, 145, 250);
 		list.addListSelectionListener(handler);
 		contentPane.add(list);
 		
 		btnRemTag = new JButton("Remove Tag");
+		sl_contentPane.putConstraint(SpringLayout.NORTH, btnRemTag, 12, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.WEST, btnRemTag, 308, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, btnRemTag, 42, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.EAST, btnRemTag, 430, SpringLayout.WEST, contentPane);
 		btnRemTag.setEnabled(false);
-		btnRemTag.setBounds(308, 12, 122, 30);
 		contentPane.add(btnRemTag);
 		
 		lblinfo1 = new JLabel("Max. 16 Characters");
+		sl_contentPane.putConstraint(SpringLayout.NORTH, lblinfo1, 90, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.WEST, lblinfo1, 161, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, lblinfo1, 105, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.EAST, lblinfo1, 333, SpringLayout.WEST, contentPane);
 		lblinfo1.setFont(new Font("Dialog", Font.BOLD, 9));
-		lblinfo1.setBounds(161, 90, 172, 15);
 		contentPane.add(lblinfo1);
 		
 		lblinfo2 = new JLabel("No special characters like ?!+#-.,");
+		sl_contentPane.putConstraint(SpringLayout.NORTH, lblinfo2, 105, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.WEST, lblinfo2, 161, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, lblinfo2, 120, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.EAST, lblinfo2, 411, SpringLayout.WEST, contentPane);
 		lblinfo2.setFont(new Font("Dialog", Font.BOLD, 9));
-		lblinfo2.setBounds(161, 105, 250, 15);
 		contentPane.add(lblinfo2);
 		
 		lblinfo3 = new JLabel("Underlines are allowed but not as 1. character");
+		sl_contentPane.putConstraint(SpringLayout.NORTH, lblinfo3, 120, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.WEST, lblinfo3, 161, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, lblinfo3, 135, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.EAST, lblinfo3, 439, SpringLayout.WEST, contentPane);
 		lblinfo3.setFont(new Font("Dialog", Font.BOLD, 9));
-		lblinfo3.setBounds(161, 120, 278, 15);
 		contentPane.add(lblinfo3);
 		
 		lblinfo4 = new JLabel("Existing names are not allowed");
+		sl_contentPane.putConstraint(SpringLayout.NORTH, lblinfo4, 135, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.WEST, lblinfo4, 161, SpringLayout.WEST, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.SOUTH, lblinfo4, 150, SpringLayout.NORTH, contentPane);
+		sl_contentPane.putConstraint(SpringLayout.EAST, lblinfo4, 439, SpringLayout.WEST, contentPane);
 		lblinfo4.setFont(new Font("Dialog", Font.BOLD, 9));
-		lblinfo4.setBounds(161, 135, 278, 15);
 		contentPane.add(lblinfo4);
 		
 		btnRemTag.addActionListener(handler);

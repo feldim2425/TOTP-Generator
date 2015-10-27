@@ -12,6 +12,7 @@ public class CodeFactory{
 	private static Thread timer;
 	public static ArrayList<CodeEntry> clist = new ArrayList<CodeEntry>();
 	public static ArrayList<Integer> visible = new ArrayList<Integer>();
+	public static boolean resort = false;
 	
 	public static void addEntry(String secret, String company, String user){
 		CodeEntry c = new CodeEntry(secret, company, user);
@@ -102,5 +103,14 @@ public class CodeFactory{
 			return e.getTaglist().isEmpty();
 		else
 			return e.getTaglist().contains(filter);
+	}
+	
+	//If there are CodeEntrys without or duplicated index reset the order
+	public static void doLoadIndexResort(){
+		resort = true;
+	}
+	
+	public static boolean haveToResort(){
+		return resort;
 	}
 }

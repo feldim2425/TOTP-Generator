@@ -40,7 +40,8 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 	private JSeparator separator;
 	private JButton btnRemove;
 	private ArrayList<String> taglist = new ArrayList<String>();
-	
+	private int index;
+
 	public CodeEntry(String secret,String company, String user, List<String> tags) {
 		this(secret, company,user);
 		taglist.addAll(tags);
@@ -163,14 +164,21 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 		b.add("company", company);
 		b.add("secret", secret);
 		b.add("tags", tagString());
+		b.add("index", index);
 		return b.build();
 	}
 	
 	public static CodeEntry fromJson(JsonObject obj) {
-		if(!obj.containsKey("user") && !obj.get("user").getValueType().equals(ValueType.STRING)) return null;
-		if(!obj.containsKey("company") && !obj.get("company").getValueType().equals(ValueType.STRING)) return null;
-		if(!obj.containsKey("secret") && !obj.get("secret").getValueType().equals(ValueType.STRING)) return null;
-		if(!obj.containsKey("tags") && !obj.get("tags").getValueType().equals(ValueType.STRING)) return null;
+		int index = 0;
+		if(!obj.containsKey("user") || !obj.get("user").getValueType().equals(ValueType.STRING)) return null;
+		if(!obj.containsKey("company") || !obj.get("company").getValueType().equals(ValueType.STRING)) return null;
+		if(!obj.containsKey("secret") || !obj.get("secret").getValueType().equals(ValueType.STRING)) return null;
+		if(!obj.containsKey("tags") || !obj.get("tags").getValueType().equals(ValueType.STRING)) return null;
+		if(!obj.containsKey("index") || !obj.get("index").getValueType().equals(ValueType.NUMBER)){
+			CodeFactory.doLoadIndexResort();
+			index = -1;
+		}
+		index = (index>-1) ? obj.getInt("index") : -1;
 		
 		return new CodeEntry(obj.getString("secret"),obj.getString("company"),obj.getString("user"),obj.getString("tags"));
 	}
@@ -235,12 +243,20 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 	public String getSecret() {
 		return secret;
 	}
-
+	
 	public void setSecret(String secret) {
 		this.secret = secret;
 	}
 
 	public ArrayList<String> getTaglist() {
 		return taglist;
+	}
+	
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
 	}
 }

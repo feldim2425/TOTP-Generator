@@ -17,6 +17,7 @@ import com.feldim2425.OTPGen.SaveFile;
 import com.feldim2425.OTPGen.codegen.CodeFactory;
 import com.feldim2425.OTPGen.ui.event.MainHandler;
 import com.feldim2425.OTPGen.ui.widget.PanelList;
+import javax.swing.SpringLayout;
 
 public class MainUI {
 	
@@ -47,6 +48,7 @@ public class MainUI {
 	private JRadioButtonMenuItem rdbtSAll;
 	private JRadioButtonMenuItem rdbtSStd;
 	private JRadioButtonMenuItem rdbtnNTag;
+	private JButton btnEdit;
 
 	/**
 	 * Launch the application.
@@ -77,7 +79,6 @@ public class MainUI {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setMinimumSize(new Dimension(MIN_WIN_WIDTH,MIN_WIN_HEIGTH));
 		frame.setTitle(STD_NAME);
 
 		//frame.setResizable(false);
@@ -85,13 +86,18 @@ public class MainUI {
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(handler);
 		frame.addComponentListener(handler);
-		frame.getContentPane().setLayout(null);
+		frame.setMinimumSize(new Dimension(MIN_WIN_WIDTH,MIN_WIN_HEIGTH));
+		SpringLayout springLayout = new SpringLayout();
+		frame.getContentPane().setLayout(springLayout);
 		
 		menubar = new JMenuBar();
-		menubar.setBounds(0, 0, STD_WIN_WIDTH, 20);
+		springLayout.putConstraint(SpringLayout.NORTH, menubar, 0, SpringLayout.NORTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, menubar, 0, SpringLayout.WEST, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, menubar, 20, SpringLayout.NORTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, menubar, 0, SpringLayout.EAST, frame.getContentPane());
+		//springLayout.putConstraint(SpringLayout.EAST, menubar, 430, SpringLayout.WEST, frame.getContentPane());
 		frame.getContentPane().add(menubar);
 		
-		handler.addWidthScale(menubar);
 		
 		mnFile = new JMenu("File");
 		menubar.add(mnFile);
@@ -134,22 +140,38 @@ public class MainUI {
 
 		
 		btnAddCode = new JButton("+");
+		springLayout.putConstraint(SpringLayout.NORTH, btnAddCode, 26, SpringLayout.NORTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, btnAddCode, 10, SpringLayout.WEST, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, btnAddCode, 46, SpringLayout.NORTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, btnAddCode, 61, SpringLayout.WEST, frame.getContentPane());
 		btnAddCode.setForeground(Color.GREEN);
 		btnAddCode.setFont(new Font("Dialog", Font.BOLD, 14));
-		btnAddCode.setBounds(10, 26, 51, 20);
 		frame.getContentPane().add(btnAddCode);
 		btnAddCode.addActionListener(handler);
 		
 		scrollPane = new PanelList();
+		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 6, SpringLayout.SOUTH, btnAddCode);
+		springLayout.putConstraint(SpringLayout.WEST, scrollPane, 10, SpringLayout.WEST, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, -10, SpringLayout.SOUTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, scrollPane, -10, SpringLayout.EAST, frame.getContentPane());
 		scrollPane.setBackground(Color.WHITE);
-		scrollPane.setBounds(11, 53, 429, 212);
 		frame.getContentPane().add(scrollPane);
-		handler.addHeigthScale(scrollPane);
-		handler.addWidthScale(scrollPane);
 		
 		tgbtnRun = new JToggleButton("Run");
-		tgbtnRun.setBounds(73, 26, 90, 20);
+		springLayout.putConstraint(SpringLayout.NORTH, tgbtnRun, 26, SpringLayout.NORTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, tgbtnRun, 73, SpringLayout.WEST, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, tgbtnRun, 46, SpringLayout.NORTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, tgbtnRun, 163, SpringLayout.WEST, frame.getContentPane());
 		frame.getContentPane().add(tgbtnRun);
+		
+		btnEdit = new JButton("Change Order ⇅");
+		springLayout.putConstraint(SpringLayout.NORTH, btnEdit, 26, SpringLayout.NORTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, btnEdit, 176, SpringLayout.WEST, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, btnEdit, 46, SpringLayout.NORTH, frame.getContentPane());
+		btnEdit.setToolTipText("Not implemented yet");
+		btnEdit.setBackground(Color.GRAY);
+		btnEdit.setEnabled(false);
+		frame.getContentPane().add(btnEdit);
 		tgbtnRun.addActionListener(handler);
 		
 		initTags("#");
