@@ -16,10 +16,10 @@ public class CodeTimer implements Runnable{
 					int statebar = (int) ((30D-CodeFactory.nextCodeCoutdown())*10D);	//Calculate StateBar
 					boolean regen = CodeFactory.getTime()!=lastCodeTime;	//Test if there is a new Code
 					
-					int len = CodeFactory.clist.size();
+					int len = CodeFactory.getClist().size();
 					for(int i=0;i<len;i++){
-						if(CodeFactory.visible.contains(i))
-							CodeFactory.clist.get(i).update(statebar,regen);
+						if(CodeFactory.getVisible().contains(i))
+							CodeFactory.getClist().get(i).update(statebar,regen);
 					}
 					
 					if(regen){

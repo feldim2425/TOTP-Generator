@@ -45,6 +45,7 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 	public CodeEntry(String secret,String company, String user, List<String> tags) {
 		this(secret, company,user);
 		taglist.addAll(tags);
+		
 	}
 	
 	public CodeEntry(String secret,String company, String user, String tag) {
@@ -55,10 +56,19 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 		}
 	}
 	
+	public CodeEntry(String secret,String company, String user, String tag, int index) {
+		this(secret,company,user,tag);
+		this.index = index;
+	}
+	
 	/**
 	 * @wbp.parser.constructor
 	 */
 	public CodeEntry(String secret,String company, String user) {
+		int s=taglist.size();
+		for(int i=0;i<s;i++){
+			
+		}
 		setBackground(new Color(204, 204, 255));
 		this.secret=secret;
 		this.user=user;
@@ -180,7 +190,7 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 		}
 		index = (index>-1) ? obj.getInt("index") : -1;
 		
-		return new CodeEntry(obj.getString("secret"),obj.getString("company"),obj.getString("user"),obj.getString("tags"));
+		return new CodeEntry(obj.getString("secret"),obj.getString("company"),obj.getString("user"),obj.getString("tags"),index);
 	}
 	
 	private String tagString() {
@@ -208,7 +218,7 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 				    options[1]); //default button title
 			 askframe.dispose();
 			if(n==0){
-				CodeFactory.clist.remove(this);
+				CodeFactory.getClist().remove(this);
 				CodeFactory.updateUI();
 				SaveFile.saveAll(SaveFile.save);
 			}

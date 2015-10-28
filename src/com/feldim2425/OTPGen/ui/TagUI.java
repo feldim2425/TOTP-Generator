@@ -14,10 +14,10 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SpringLayout;
 import javax.swing.border.EmptyBorder;
 
 import com.feldim2425.OTPGen.ui.event.TagHandler;
-import javax.swing.SpringLayout;
 
 public class TagUI extends JDialog {
 	

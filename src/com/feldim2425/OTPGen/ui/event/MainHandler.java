@@ -21,6 +21,7 @@ import com.feldim2425.OTPGen.SaveFile;
 import com.feldim2425.OTPGen.codegen.CodeFactory;
 import com.feldim2425.OTPGen.ui.CodeEditUI;
 import com.feldim2425.OTPGen.ui.MainUI;
+import com.feldim2425.OTPGen.ui.SortUI;
 import com.feldim2425.OTPGen.ui.TagUI;
 
 public class MainHandler implements WindowListener, ComponentListener, ActionListener, ContainerListener, ItemListener {
@@ -84,8 +85,12 @@ public class MainHandler implements WindowListener, ComponentListener, ActionLis
 				MainUI.window.tgbtnRun.setText("Pause");
 			else
 				MainUI.window.tgbtnRun.setText("Run");
-		}else if(e.getSource().equals(MainUI.window.btnAddCode)){
+		}
+		else if(e.getSource().equals(MainUI.window.btnAddCode)){
 			CodeEditUI.start(null);
+		}
+		else if(e.getSource().equals(MainUI.window.btnEdit)){
+			SortUI.start();
 		}
 	}
 

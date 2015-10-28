@@ -32,7 +32,7 @@ public class TagHandler implements ActionListener, ListSelectionListener, Window
 			ui.dispose();
 		}
 		else if(e.getSource().equals(ui.btnOk)){
-			doChanges();
+			saveChanges();
 			ui.dispose();
 		}
 		else if(e.getSource().equals(ui.btnNewTag)){
@@ -136,14 +136,14 @@ public class TagHandler implements ActionListener, ListSelectionListener, Window
 		return null;
 	}
 	
-	private void doChanges(){
+	private void saveChanges(){
 		Iterator<String> keys = nameTable.keySet().iterator();			
-		int size = CodeFactory.clist.size();
+		int size = CodeFactory.getClist().size();
 		while(keys.hasNext()){
 			String key = keys.next();
 			for(int i=0;i<size;i++) 		//Rename Tags in the codes lists
-				if(CodeFactory.clist.get(i).getTaglist().remove(key) && nameTable.get(key)!=null)
-					CodeFactory.clist.get(i).getTaglist().add(nameTable.get(key));
+				if(CodeFactory.getClist().get(i).getTaglist().remove(key) && nameTable.get(key)!=null)
+					CodeFactory.getClist().get(i).getTaglist().add(nameTable.get(key));
 		}
 		
 		String newview = null;

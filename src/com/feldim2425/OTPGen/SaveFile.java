@@ -88,9 +88,9 @@ public class SaveFile {
 			}
 			
 			JsonArrayBuilder arrb2 = Json.createArrayBuilder();
-			size = CodeFactory.clist.size();
+			size = CodeFactory.getClist().size();
 			for(int i=0;i<size;i++){
-				arrb2.add(CodeFactory.clist.get(i).toJson());
+				arrb2.add(CodeFactory.getClist().get(i).toJson());
 			}
 			
 			out = new FileOutputStream(f);
@@ -162,7 +162,7 @@ public class SaveFile {
 	
 	private static void resetData() {
 		tags.clear();
-		CodeFactory.clist.clear();
+		CodeFactory.getClist().clear();
 		if(Main.doneInit) CodeFactory.updateUI();
 	}
 

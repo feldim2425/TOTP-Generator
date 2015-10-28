@@ -1,6 +1,7 @@
 package com.feldim2425.OTPGen.codegen;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.feldim2425.OTPGen.Main;
@@ -10,8 +11,10 @@ import com.feldim2425.OTPGen.ui.MainUI;
 public class CodeFactory{
 	
 	private static Thread timer;
-	public static ArrayList<CodeEntry> clist = new ArrayList<CodeEntry>();
-	public static ArrayList<Integer> visible = new ArrayList<Integer>();
+	private static ArrayList<CodeEntry> clist = new ArrayList<CodeEntry>();
+	private static ArrayList<Integer> visible = new ArrayList<Integer>();
+	private static HashMap<Integer,Integer> sort = new HashMap<Integer,Integer>();
+
 	public static boolean resort = false;
 	
 	public static void addEntry(String secret, String company, String user){
@@ -22,7 +25,10 @@ public class CodeFactory{
 	public static void addEntry(CodeEntry c){
 		c.setSize(200,90);
 		clist.add(c);
-		if(Main.doneInit) updateUI();
+		if(Main.doneInit){
+			readIndex();
+			updateUI();
+		}
 	}
 	
 	public static void startCodeTimer(){	//Start the timer thread
@@ -43,7 +49,7 @@ public class CodeFactory{
 		return (int) (sec / 30);
 	}
 	
-	public static void updateUI(){
+	synchronized public static void updateUI(){
 		String filter = MainUI.window.selectedView();
 		ArrayList<Integer> oldv = new ArrayList<Integer>();
 		oldv.addAll(visible);
@@ -53,16 +59,16 @@ public class CodeFactory{
 		visible.clear();
 		for(int i=0;i<len;i++)
 		{
-			if(matchTagFilter(clist.get(i),filter))
-				visible.add(i);
-			if(visible.contains(i)){
-				MainUI.window.scrollPane.addToList(clist.get(i));
+			if(matchTagFilter(clist.get(sort.get(i)),filter))
+				visible.add(sort.get(i));
+			if(visible.contains(sort.get(i))){
+				MainUI.window.scrollPane.addToList(clist.get(sort.get(i)));
 				if(MainUI.window!=null && !MainUI.window.tgbtnRun.isSelected())
-					clist.get(i).update((int) ((30D-CodeFactory.nextCodeCoutdown())*10D) , true);
+					clist.get(sort.get(i)).update((int) ((30D-CodeFactory.nextCodeCoutdown())*10D) , true);
 			}
 		}
 		
-		updateCodes(oldv);
+		updateCodes(oldv,visible,null);
 	}
 	
 	public static void updateCodes(List<Integer> old, List<Integer> newlist, List<Integer> force){
@@ -105,6 +111,34 @@ public class CodeFactory{
 			return e.getTaglist().contains(filter);
 	}
 	
+	synchronized public static void readIndex(){
+		if(resort){
+			doResort();
+			return;
+		}
+		int s = clist.size();
+		sort.clear();
+		for(int i=0;i<s;i++){
+			if(sort.containsKey(clist.get(i).getIndex())){
+				doResort();
+				return;
+			}
+			else{
+				sort.put(clist.get(i).getIndex(),i);
+			}
+		}
+	}
+	
+	private static void doResort(){
+		int s = clist.size();
+		sort.clear();
+		for(int i=0;i<s;i++){
+			sort.put(i, i);
+			clist.get(i).setIndex(i);
+		}
+		SaveFile.saveAll(SaveFile.save);
+	}
+	
 	//If there are CodeEntrys without or duplicated index reset the order
 	public static void doLoadIndexResort(){
 		resort = true;
@@ -112,5 +146,18 @@ public class CodeFactory{
 	
 	public static boolean haveToResort(){
 		return resort;
+	}
+	
+
+	public static ArrayList<CodeEntry> getClist() {
+		return clist;
+	}
+
+	public static ArrayList<Integer> getVisible() {
+		return visible;
+	}
+
+	public static HashMap<Integer, Integer> getSort() {
+		return sort;
 	}
 }

@@ -1,6 +1,5 @@
 package com.feldim2425.OTPGen.ui;
 
-import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Point;
@@ -16,12 +15,12 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 import javax.swing.border.EmptyBorder;
 
 import com.feldim2425.OTPGen.SaveFile;
 import com.feldim2425.OTPGen.codegen.CodeEntry;
 import com.feldim2425.OTPGen.ui.event.CodeEditHandler;
-import javax.swing.SpringLayout;
 
 public class CodeEditUI extends JDialog {
 	private static final long serialVersionUID = -5300476317075574477L;
@@ -144,8 +143,8 @@ public class CodeEditUI extends JDialog {
 		ckbxShow.addActionListener(handler);
 		
 		btnCp = new JButton("Copy Secret");
-		btnCp.setToolTipText("enable \"Show Secret\" to copy the secret");
 		btnCp.setEnabled(false);
+		btnCp.setToolTipText("enable \"Show Secret\" to copy the secret");
 		btnCp.setFont(new Font("Dialog", Font.BOLD, 9));
 		btnCp.setBounds(345, 130, 93, 15);
 		contentPanel.add(btnCp);

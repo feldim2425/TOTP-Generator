@@ -12,12 +12,12 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JToggleButton;
+import javax.swing.SpringLayout;
 
 import com.feldim2425.OTPGen.SaveFile;
 import com.feldim2425.OTPGen.codegen.CodeFactory;
 import com.feldim2425.OTPGen.ui.event.MainHandler;
 import com.feldim2425.OTPGen.ui.widget.PanelList;
-import javax.swing.SpringLayout;
 
 public class MainUI {
 	
@@ -44,11 +44,11 @@ public class MainUI {
 	public JMenuItem mntmNewF;
 	public JMenuItem mntmOpen;
 	public JToggleButton tgbtnRun;
+	public JButton btnEdit;
 	
 	private JRadioButtonMenuItem rdbtSAll;
 	private JRadioButtonMenuItem rdbtSStd;
 	private JRadioButtonMenuItem rdbtnNTag;
-	private JButton btnEdit;
 
 	/**
 	 * Launch the application.
@@ -59,6 +59,7 @@ public class MainUI {
 				try {
 					window = new MainUI();
 					window.frame.setVisible(true);
+					CodeFactory.readIndex();
 					CodeFactory.updateUI();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -95,7 +96,6 @@ public class MainUI {
 		springLayout.putConstraint(SpringLayout.WEST, menubar, 0, SpringLayout.WEST, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.SOUTH, menubar, 20, SpringLayout.NORTH, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, menubar, 0, SpringLayout.EAST, frame.getContentPane());
-		//springLayout.putConstraint(SpringLayout.EAST, menubar, 430, SpringLayout.WEST, frame.getContentPane());
 		frame.getContentPane().add(menubar);
 		
 		
@@ -168,9 +168,7 @@ public class MainUI {
 		springLayout.putConstraint(SpringLayout.NORTH, btnEdit, 26, SpringLayout.NORTH, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.WEST, btnEdit, 176, SpringLayout.WEST, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.SOUTH, btnEdit, 46, SpringLayout.NORTH, frame.getContentPane());
-		btnEdit.setToolTipText("Not implemented yet");
-		btnEdit.setBackground(Color.GRAY);
-		btnEdit.setEnabled(false);
+		btnEdit.addActionListener(handler);
 		frame.getContentPane().add(btnEdit);
 		tgbtnRun.addActionListener(handler);
 		
@@ -233,7 +231,7 @@ public class MainUI {
 		}
 		else{
 			int size = mnShow.getItemCount();
-			for(int i=0;i<size;i++){
+			for(int i=3;i<size;i++){
 				if(!(mnShow.getItem(i) instanceof JRadioButtonMenuItem)) continue;
 				if(!((JRadioButtonMenuItem)mnShow.getItem(i)).getText().equals(view)) continue;
 				((JRadioButtonMenuItem)mnShow.getItem(i)).setSelected(true);
