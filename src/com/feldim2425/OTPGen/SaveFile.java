@@ -148,6 +148,7 @@ public class SaveFile {
 					CodeFactory.addEntry(code);
 				}
 			}
+			if(Main.doneInit) CodeFactory.updateData();
 			
 			in.close();
 		} catch (IOException e) {
@@ -163,7 +164,12 @@ public class SaveFile {
 	private static void resetData() {
 		tags.clear();
 		CodeFactory.getClist().clear();
-		if(Main.doneInit) CodeFactory.updateUI();
+		CodeFactory.getSort().clear();
+		CodeFactory.getVisible().clear();
+		if(Main.doneInit){
+			MainUI.window.selectView("#");
+			CodeFactory.updateUI();
+		}
 	}
 
 	public static boolean selectSave(){

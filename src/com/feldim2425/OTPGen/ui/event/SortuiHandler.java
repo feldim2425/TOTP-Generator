@@ -29,7 +29,7 @@ public class SortuiHandler implements WindowListener, ActionListener{
 			ui.dispose();
 		}
 		else if(e.getSource().equals(ui.btnDown)){
-			if(ui.list.getSelectedIndex()+1 > ui.list.getModel().getSize()) return;
+			if(ui.list.getSelectedIndex()+1 >= ui.list.getModel().getSize()) return;
 			int sel = ui.list.getSelectedIndex();
 			moveItem(sel, sel+1);
 			ui.list.setSelectedIndex(sel+1);
@@ -77,7 +77,7 @@ public class SortuiHandler implements WindowListener, ActionListener{
 		int s = CodeFactory.getClist().size();
 		for(int i=0;i<s;i++){
 			CodeFactory.getSort().put(i, ui.tempsort.get(i));
-			CodeFactory.getClist().get(i).setIndex(ui.tempsort.get(i));
+			CodeFactory.getClist().get(ui.tempsort.get(i)).setIndex(i);
 		}
 		
 		SaveFile.saveAll(SaveFile.save);

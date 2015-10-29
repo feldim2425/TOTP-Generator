@@ -29,6 +29,7 @@ import com.feldim2425.OTPGen.SaveFile;
 import com.feldim2425.OTPGen.ui.CodeEditUI;
 import com.feldim2425.OTPGen.ui.MainUI;
 
+//	TODO: Remove the Index and resort other Codes.
 public class CodeEntry extends JPanel implements ComponentListener, ActionListener {
 	
 	private JLabel label;
@@ -40,7 +41,7 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 	private JSeparator separator;
 	private JButton btnRemove;
 	private ArrayList<String> taglist = new ArrayList<String>();
-	private int index;
+	private int index=-1;
 
 	public CodeEntry(String secret,String company, String user, List<String> tags) {
 		this(secret, company,user);
@@ -65,10 +66,8 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 	 * @wbp.parser.constructor
 	 */
 	public CodeEntry(String secret,String company, String user) {
-		int s=taglist.size();
-		for(int i=0;i<s;i++){
-			
-		}
+		index = (index < 0) ? CodeFactory.getClist().size() : index;
+		
 		setBackground(new Color(204, 204, 255));
 		this.secret=secret;
 		this.user=user;
@@ -218,6 +217,7 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 				    options[1]); //default button title
 			 askframe.dispose();
 			if(n==0){
+				removeIndex();
 				CodeFactory.getClist().remove(this);
 				CodeFactory.updateUI();
 				SaveFile.saveAll(SaveFile.save);
@@ -229,6 +229,20 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 		}
 		else if(e.getSource().equals(this.btnEdit)){
 			CodeEditUI.start(this);
+		}
+	}
+	
+	private void removeIndex(){
+		ArrayList<Integer> tempsort = new ArrayList<Integer>();
+		int s = CodeFactory.getClist().size();
+		for(int i=0;i<s;i++){
+			tempsort.add(CodeFactory.getSort().get(i));
+		}
+		tempsort.remove(index);
+		CodeFactory.getSort().clear();
+		for(int i=0;i<s-1;i++){
+			CodeFactory.getSort().put(i, tempsort.get(i));
+			CodeFactory.getClist().get(tempsort.get(i)).setIndex(i);
 		}
 	}
 	

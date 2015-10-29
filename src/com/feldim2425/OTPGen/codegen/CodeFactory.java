@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.feldim2425.OTPGen.Main;
 import com.feldim2425.OTPGen.SaveFile;
 import com.feldim2425.OTPGen.ui.MainUI;
 
@@ -25,10 +24,11 @@ public class CodeFactory{
 	public static void addEntry(CodeEntry c){
 		c.setSize(200,90);
 		clist.add(c);
-		if(Main.doneInit){
-			readIndex();
-			updateUI();
-		}
+	}
+	
+	public static void updateData(){
+		readIndex();
+		updateUI();
 	}
 	
 	public static void startCodeTimer(){	//Start the timer thread
@@ -59,7 +59,7 @@ public class CodeFactory{
 		visible.clear();
 		for(int i=0;i<len;i++)
 		{
-			if(matchTagFilter(clist.get(sort.get(i)),filter))
+			if(sort.containsKey(i) && (clist.size() > sort.get(i)) && matchTagFilter(clist.get(sort.get(i)),filter))
 				visible.add(sort.get(i));
 			if(visible.contains(sort.get(i))){
 				MainUI.window.scrollPane.addToList(clist.get(sort.get(i)));
@@ -123,6 +123,10 @@ public class CodeFactory{
 				doResort();
 				return;
 			}
+			else if(clist.get(i).getIndex()>=s){
+				doResort();
+				return;
+			}
 			else{
 				sort.put(clist.get(i).getIndex(),i);
 			}
@@ -138,6 +142,7 @@ public class CodeFactory{
 		}
 		SaveFile.saveAll(SaveFile.save);
 	}
+	
 	
 	//If there are CodeEntrys without or duplicated index reset the order
 	public static void doLoadIndexResort(){

@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import com.feldim2425.OTPGen.Main;
 import com.feldim2425.OTPGen.SaveFile;
 import com.feldim2425.OTPGen.codegen.CodeEntry;
 import com.feldim2425.OTPGen.codegen.CodeFactory;
@@ -31,6 +32,7 @@ public class CodeEditHandler implements ActionListener, WindowListener {
 						ui.txtCompany.getText(),
 						ui.txtUser.getText(),
 						ui.listTags.getSelectedValuesList()));
+				if(Main.doneInit) CodeFactory.updateData();
 			}
 			else{
 				ui.getEntry().setCompany( ui.txtCompany.getText());
@@ -40,6 +42,7 @@ public class CodeEditHandler implements ActionListener, WindowListener {
 				ui.getEntry().getTaglist().addAll(ui.listTags.getSelectedValuesList());
 				ui.getEntry().update((int) ((30D-CodeFactory.nextCodeCoutdown())*10D) , true);
 			}
+			
 			SaveFile.saveAll(SaveFile.save);
 			ui.dispose();
 		}
