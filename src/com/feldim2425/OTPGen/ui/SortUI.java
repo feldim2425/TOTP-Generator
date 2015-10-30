@@ -113,7 +113,7 @@ public class SortUI extends JDialog {
 		DefaultListModel<String> lcodes= new DefaultListModel<String>();
 		for(int i=0;i<s;i++){
 			CodeEntry c = CodeFactory.getClist().get(tempsort.get(i));
-			lcodes.addElement(c.getCompany()+" / "+c.getUser());
+			lcodes.addElement(c.getIssuer()+" / "+c.getUser());
 		}
 		list.setModel(lcodes);
 	}

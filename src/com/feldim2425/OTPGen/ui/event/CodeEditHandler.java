@@ -29,13 +29,13 @@ public class CodeEditHandler implements ActionListener, WindowListener {
 			if(ui.getEntry()==null){
 				CodeFactory.addEntry(new CodeEntry(
 						new String(ui.pwSecret.getPassword()),
-						ui.txtCompany.getText(),
+						ui.txtIssuer.getText(),
 						ui.txtUser.getText(),
 						ui.listTags.getSelectedValuesList()));
 				if(Main.doneInit) CodeFactory.updateData();
 			}
 			else{
-				ui.getEntry().setCompany( ui.txtCompany.getText());
+				ui.getEntry().setIssuer( ui.txtIssuer.getText());
 				ui.getEntry().setUser(ui.txtUser.getText());
 				ui.getEntry().setSecret(new String(ui.pwSecret.getPassword()));
 				ui.getEntry().getTaglist().clear();

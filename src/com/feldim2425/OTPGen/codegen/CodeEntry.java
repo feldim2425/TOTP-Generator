@@ -28,12 +28,13 @@ import org.apache.commons.codec.binary.Base32;
 import com.feldim2425.OTPGen.SaveFile;
 import com.feldim2425.OTPGen.ui.CodeEditUI;
 import com.feldim2425.OTPGen.ui.MainUI;
+import com.feldim2425.OTPGen.ui.ShowQRDialog;
 
 //	TODO: Remove the Index and resort other Codes.
 public class CodeEntry extends JPanel implements ComponentListener, ActionListener {
 	
 	private JLabel label;
-	private String company;
+	private String issuer;
 	private String user;
 	private JLabel label_1;
 	private JProgressBar progressBar;
@@ -43,41 +44,41 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 	private ArrayList<String> taglist = new ArrayList<String>();
 	private int index=-1;
 
-	public CodeEntry(String secret,String company, String user, List<String> tags) {
-		this(secret, company,user);
+	public CodeEntry(String secret,String issuer, String user, List<String> tags) {
+		this(secret, issuer,user);
 		taglist.addAll(tags);
 		
 	}
 	
-	public CodeEntry(String secret,String company, String user, String tag) {
-		this(secret,company,user);
+	public CodeEntry(String secret,String issuer, String user, String tag) {
+		this(secret,issuer,user);
 		String[] tags = tag.split(";");
 		for(int i=0;i<tags.length;i++){
 			taglist.add(tags[i]);
 		}
 	}
 	
-	public CodeEntry(String secret,String company, String user, String tag, int index) {
-		this(secret,company,user,tag);
+	public CodeEntry(String secret,String issuer, String user, String tag, int index) {
+		this(secret,issuer,user,tag);
 		this.index = index;
 	}
 	
 	/**
 	 * @wbp.parser.constructor
 	 */
-	public CodeEntry(String secret,String company, String user) {
+	public CodeEntry(String secret,String issuer, String user) {
 		index = (index < 0) ? CodeFactory.getClist().size() : index;
 		
 		setBackground(new Color(204, 204, 255));
 		this.secret=secret;
 		this.user=user;
-		this.company=company;
+		this.issuer=issuer;
 		setLayout(null);
 		
 		label = new JLabel("New label");
 		label.setFont(new Font("Dialog", Font.BOLD, 13));
 		label.setBounds(12, 12, 260, 15);
-		label.setText(company+" - "+user);
+		label.setText(issuer+" - "+user);
 		add(label);
 		
 		label_1 = new JLabel("000000");
@@ -111,12 +112,13 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 		
 		addComponentListener(this);
 		
-		btnNewButton_1 = new JButton("QR");
-		btnNewButton_1.setToolTipText("Not impemented yet");
-		btnNewButton_1.setBackground(Color.GRAY);
-		btnNewButton_1.setEnabled(false);
-		btnNewButton_1.setBounds(271, 56, 55, 20);
-		add(btnNewButton_1);
+		btnQR = new JButton("QR");
+		btnQR.setToolTipText("Not impemented yet");
+		//btnQR.setBackground(Color.GRAY);
+		//btnQR.setEnabled(false);
+		btnQR.setBounds(271, 56, 55, 20);
+		add(btnQR);
+		btnQR.addActionListener(this);
 		
 		btnCopy = new JButton("Copy");
 		btnCopy.setBounds(251, 28, 75, 20);
@@ -150,7 +152,7 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 	 */
 	private static final long serialVersionUID = 1L;
 	private JButton btnEdit;
-	private JButton btnNewButton_1;
+	private JButton btnQR;
 	private JButton btnCopy;
 
 	@Override
@@ -170,7 +172,7 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 	public JsonObject toJson() {
 		JsonObjectBuilder b = Json.createObjectBuilder();
 		b.add("user", user);
-		b.add("company", company);
+		b.add("issuer", issuer);
 		b.add("secret", secret);
 		b.add("tags", tagString());
 		b.add("index", index);
@@ -180,7 +182,7 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 	public static CodeEntry fromJson(JsonObject obj) {
 		int index = 0;
 		if(!obj.containsKey("user") || !obj.get("user").getValueType().equals(ValueType.STRING)) return null;
-		if(!obj.containsKey("company") || !obj.get("company").getValueType().equals(ValueType.STRING)) return null;
+		if(!obj.containsKey("issuer") || !obj.get("issuer").getValueType().equals(ValueType.STRING)) return null;
 		if(!obj.containsKey("secret") || !obj.get("secret").getValueType().equals(ValueType.STRING)) return null;
 		if(!obj.containsKey("tags") || !obj.get("tags").getValueType().equals(ValueType.STRING)) return null;
 		if(!obj.containsKey("index") || !obj.get("index").getValueType().equals(ValueType.NUMBER)){
@@ -189,7 +191,7 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 		}
 		index = (index>-1) ? obj.getInt("index") : -1;
 		
-		return new CodeEntry(obj.getString("secret"),obj.getString("company"),obj.getString("user"),obj.getString("tags"),index);
+		return new CodeEntry(obj.getString("secret"),obj.getString("issuer"),obj.getString("user"),obj.getString("tags"),index);
 	}
 	
 	private String tagString() {
@@ -208,7 +210,7 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 			JFrame askframe=new JFrame();
 			Object[] options = {"Yes", "No"};
 			int n = JOptionPane.showOptionDialog(askframe,
-					"Do you really want to delete "+company+" - "+user,
+					"Do you really want to delete "+issuer+" - "+user,
 				    MainUI.STD_NAME+" : Delete ?",
 				    JOptionPane.YES_NO_OPTION,
 				    JOptionPane.QUESTION_MESSAGE,
@@ -230,6 +232,9 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 		else if(e.getSource().equals(this.btnEdit)){
 			CodeEditUI.start(this);
 		}
+		else if(e.getSource().equals(this.btnQR)){
+			ShowQRDialog.start(this);
+		}
 	}
 	
 	private void removeIndex(){
@@ -246,13 +251,13 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 		}
 	}
 	
-	public String getCompany() {
-		return company;
+	public String getIssuer() {
+		return issuer;
 	}
 
-	public void setCompany(String company) {
-		this.company = company;
-		this.label.setText(company+" - "+user);
+	public void setIssuer(String issuer) {
+		this.issuer = issuer;
+		this.label.setText(issuer+" - "+user);
 	}
 
 	public String getUser() {
@@ -261,7 +266,7 @@ public class CodeEntry extends JPanel implements ComponentListener, ActionListen
 
 	public void setUser(String user) {
 		this.user = user;
-		this.label.setText(company+" - "+user);
+		this.label.setText(issuer+" - "+user);
 	}
 
 	public String getSecret() {
