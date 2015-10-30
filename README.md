@@ -1,7 +1,9 @@
 # TOTP-Generator
 A Java TOTP-Generator with a UI
 
-Beta Download: http://cur.lv/rh5b2
+Download: http://cur.lv/rh5b2
+Version: 0.3.0-beta
+Last Update: 30.Oct.2015
 
 ####TODO:
   * Secret Encryption
