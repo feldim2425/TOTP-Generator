@@ -8,6 +8,8 @@ import com.feldim2425.OTPGen.ui.MainUI;
 
 public class Main {
 	
+	public static final String VERSION = "0.3.0-beta";
+	public static final String R_DATE = "30. October 2015";
 	public static boolean doneInit = false;
 	
 	/*

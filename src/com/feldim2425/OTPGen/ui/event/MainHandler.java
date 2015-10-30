@@ -1,6 +1,7 @@
 package com.feldim2425.OTPGen.ui.event;
 
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -11,6 +12,9 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -19,6 +23,7 @@ import javax.swing.JRadioButtonMenuItem;
 import com.feldim2425.OTPGen.Main;
 import com.feldim2425.OTPGen.SaveFile;
 import com.feldim2425.OTPGen.codegen.CodeFactory;
+import com.feldim2425.OTPGen.ui.AboutDialog;
 import com.feldim2425.OTPGen.ui.CodeEditUI;
 import com.feldim2425.OTPGen.ui.MainUI;
 import com.feldim2425.OTPGen.ui.SortUI;
@@ -91,6 +96,19 @@ public class MainHandler implements WindowListener, ComponentListener, ActionLis
 		}
 		else if(e.getSource().equals(MainUI.window.btnEdit)){
 			SortUI.start();
+		}
+		else if(e.getSource().equals(MainUI.window.mntmAbout)){
+			AboutDialog.start();
+		}
+		else if(e.getSource().equals(MainUI.window.mntmGithub)){
+			try {
+				if(Desktop.isDesktopSupported())
+					Desktop.getDesktop().browse(new URI("https://github.com/feldim2425/TOTP-Generator"));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			} catch (URISyntaxException e1) {
+				e1.printStackTrace();
+			} 
 		}
 	}
 

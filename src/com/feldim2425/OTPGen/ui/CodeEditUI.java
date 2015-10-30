@@ -26,7 +26,7 @@ public class CodeEditUI extends JDialog {
 	private static final long serialVersionUID = -5300476317075574477L;
 	
 	private final JPanel contentPanel = new JPanel();
-	public JTextField txtCompany;
+	public JTextField txtIssuer;
 	public JTextField txtUser;
 	public JPasswordField pwSecret;
 	public JList<String> listTags;
@@ -67,11 +67,12 @@ public class CodeEditUI extends JDialog {
 			posY = p.y;
 		}
 		
-		String company = (entry!=null)? entry.getCompany() : "";
+		String issuer = (entry!=null)? entry.getIssuer() : "";
 		String user = (entry!=null)? entry.getUser()       : "";
 		String secret = (entry!=null)? entry.getSecret()   : "";
 		code = entry;
 		
+		setTitle(MainUI.STD_NAME+" : "+((entry==null)?"Add":"Edit")+" Code");
 		addWindowListener(handler);
 		setBounds(posX, posY, 450, 225);
 		SpringLayout springLayout = new SpringLayout();
@@ -107,11 +108,11 @@ public class CodeEditUI extends JDialog {
 		});
 		selectTags();
 
-		txtCompany = new JTextField();
-		txtCompany.setBounds(271, 11, 167, 19);
-		contentPanel.add(txtCompany);
-		txtCompany.setColumns(10);
-		txtCompany.setText(company);
+		txtIssuer = new JTextField();
+		txtIssuer.setBounds(271, 11, 167, 19);
+		contentPanel.add(txtIssuer);
+		txtIssuer.setColumns(10);
+		txtIssuer.setText(issuer);
 
 		txtUser = new JTextField();
 		txtUser.setBounds(271, 42, 167, 19);
@@ -119,7 +120,7 @@ public class CodeEditUI extends JDialog {
 		txtUser.setColumns(10);
 		txtUser.setText(user);
 
-		JLabel lblt1 = new JLabel("Company:");
+		JLabel lblt1 = new JLabel("Issuer:");
 		lblt1.setBounds(160, 13, 70, 15);
 		contentPanel.add(lblt1);
 

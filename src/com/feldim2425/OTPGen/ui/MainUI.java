@@ -45,6 +45,8 @@ public class MainUI {
 	public JMenuItem mntmOpen;
 	public JToggleButton tgbtnRun;
 	public JButton btnEdit;
+	public JMenuItem mntmAbout;
+	public JMenuItem mntmGithub;
 	
 	private JRadioButtonMenuItem rdbtSAll;
 	private JRadioButtonMenuItem rdbtSStd;
@@ -137,7 +139,17 @@ public class MainUI {
 		mntmEditTag = new JMenuItem("Edit Tags");
 		mnTags.add(mntmEditTag);
 		mntmEditTag.addActionListener(handler);
-
+		
+		JMenu mnHelp = new JMenu("Help");
+		menubar.add(mnHelp);
+		
+		mntmAbout = new JMenuItem("About");
+		mnHelp.add(mntmAbout);
+		mntmAbout.addActionListener(handler);
+		
+		mntmGithub = new JMenuItem("Github");
+		mnHelp.add(mntmGithub);
+		mntmGithub.addActionListener(handler);
 		
 		btnAddCode = new JButton("+");
 		springLayout.putConstraint(SpringLayout.NORTH, btnAddCode, 26, SpringLayout.NORTH, frame.getContentPane());
@@ -240,5 +252,4 @@ public class MainUI {
 		}
 		return false;
 	}
-	
 }
