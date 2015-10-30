@@ -1,8 +1,8 @@
 # TOTP-Generator
 A Java TOTP-Generator with a UI
 
-Download: http://cur.lv/rh5b2
-Version: 0.3.0-beta
+Download: http://cur.lv/rh5b2</br>
+Version: 0.3.0-beta</br>
 Last Update: 30.Oct.2015
 
 ####TODO:
