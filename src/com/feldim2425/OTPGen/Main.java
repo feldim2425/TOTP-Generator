@@ -16,8 +16,9 @@ public class Main {
 	 * TODO: Add the encryption 
 	 */
 	public static void main(String[] args) {
-		if(askFile()) return;
-		if(!SaveFile.selectSave()){
+		int c = askFile();
+		if(c==2) return;
+		if(c==0 && !SaveFile.selectSave()){
 			if(!SaveFile.curruptedFile()) return;
 		}
 		MainUI.start();
@@ -51,9 +52,9 @@ public class Main {
 	}
 	
 	
-	private static boolean askFile(){
+	private static int askFile(){
 		JFrame askframe=new JFrame();
-		Object[] options = {"Create/Select File", "Close"};
+		Object[] options = {"Create/Select File", "Open Blank Window", "Close"};
 		int n = JOptionPane.showOptionDialog(askframe,
 				"Select or create a save file?",
 				MainUI.STD_NAME+" : Open a File",
@@ -63,6 +64,6 @@ public class Main {
 				options,
 				options[0]);
 		askframe.dispose();
-		return n!=0;
+		return n;
 	}
 }

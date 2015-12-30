@@ -13,6 +13,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SpringLayout;
 import javax.swing.border.EmptyBorder;
 
+import com.feldim2425.OTPGen.SaveFile;
 import com.feldim2425.OTPGen.codegen.CodeEntry;
 import com.feldim2425.OTPGen.codegen.CodeFactory;
 import com.feldim2425.OTPGen.ui.event.SortuiHandler;
@@ -37,7 +38,7 @@ public class SortUI extends JDialog {
 	 */
 	public static void start() {
 		try {
-			if (MainUI.isEditing())
+			if (MainUI.isEditing() || SaveFile.save==null)
 				return;
 			MainUI.setEditing(true);
 			SortUI dialog = new SortUI();

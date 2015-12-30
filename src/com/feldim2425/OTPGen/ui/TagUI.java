@@ -17,6 +17,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SpringLayout;
 import javax.swing.border.EmptyBorder;
 
+import com.feldim2425.OTPGen.SaveFile;
 import com.feldim2425.OTPGen.ui.event.TagHandler;
 
 public class TagUI extends JDialog {
@@ -44,7 +45,7 @@ public class TagUI extends JDialog {
 	 * Launch the application.
 	 */
 	public static void start() {
-		if(MainUI.isEditing()) return;  //Return if there is already a edit Dialog
+		if(MainUI.isEditing() || SaveFile.save==null) return;  //Return if there is already a edit Dialog
 		MainUI.setEditing(true);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {

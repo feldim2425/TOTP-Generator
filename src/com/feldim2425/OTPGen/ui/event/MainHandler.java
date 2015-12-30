@@ -85,6 +85,9 @@ public class MainHandler implements WindowListener, ComponentListener, ActionLis
 				SaveFile.curruptedFile();
 			}
 		}
+		else if(e.getSource().equals(MainUI.window.mntmCloseFile)){
+			if(!MainUI.isEditing()) SaveFile.closeFile();
+		}
 		else if(e.getSource().equals(MainUI.window.tgbtnRun)){
 			if(MainUI.window.tgbtnRun.isSelected())
 				MainUI.window.tgbtnRun.setText("Pause");

@@ -18,6 +18,7 @@ import com.feldim2425.OTPGen.SaveFile;
 import com.feldim2425.OTPGen.codegen.CodeFactory;
 import com.feldim2425.OTPGen.ui.event.MainHandler;
 import com.feldim2425.OTPGen.ui.widget.PanelList;
+import javax.swing.JLabel;
 
 public class MainUI {
 	
@@ -47,7 +48,9 @@ public class MainUI {
 	public JButton btnEdit;
 	public JMenuItem mntmAbout;
 	public JMenuItem mntmGithub;
+	public JMenuItem mntmCloseFile;
 	
+	private JLabel lblNoFile;
 	private JRadioButtonMenuItem rdbtSAll;
 	private JRadioButtonMenuItem rdbtSStd;
 	private JRadioButtonMenuItem rdbtnNTag;
@@ -107,6 +110,11 @@ public class MainUI {
 		mntmOpen = new JMenuItem("Open/Create File");
 		mnFile.add(mntmOpen);
 		mntmOpen.addActionListener(handler);
+		
+		mntmCloseFile = new JMenuItem("Close File");
+		mnFile.add(mntmCloseFile);
+		mntmCloseFile.addActionListener(handler);
+		
 		
 		mnSettings = new JMenu("Settings");
 		menubar.add(mnSettings);
@@ -175,6 +183,7 @@ public class MainUI {
 		springLayout.putConstraint(SpringLayout.SOUTH, tgbtnRun, 46, SpringLayout.NORTH, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, tgbtnRun, 163, SpringLayout.WEST, frame.getContentPane());
 		frame.getContentPane().add(tgbtnRun);
+		tgbtnRun.addActionListener(handler);
 		
 		btnEdit = new JButton("Change Order ⇅");
 		springLayout.putConstraint(SpringLayout.NORTH, btnEdit, 26, SpringLayout.NORTH, frame.getContentPane());
@@ -182,7 +191,16 @@ public class MainUI {
 		springLayout.putConstraint(SpringLayout.SOUTH, btnEdit, 46, SpringLayout.NORTH, frame.getContentPane());
 		btnEdit.addActionListener(handler);
 		frame.getContentPane().add(btnEdit);
-		tgbtnRun.addActionListener(handler);
+		
+		lblNoFile = new JLabel("No File!");
+		springLayout.putConstraint(SpringLayout.EAST, lblNoFile, 108, SpringLayout.EAST, btnEdit);
+		lblNoFile.setForeground(Color.RED);
+		lblNoFile.setFont(new Font("DialogInput", Font.BOLD | Font.ITALIC, 14));
+		springLayout.putConstraint(SpringLayout.NORTH, lblNoFile, 6, SpringLayout.SOUTH, menubar);
+		springLayout.putConstraint(SpringLayout.WEST, lblNoFile, 18, SpringLayout.EAST, btnEdit);
+		frame.getContentPane().add(lblNoFile);
+		lblNoFile.setVisible(SaveFile.save==null);
+		
 		
 		initTags("#");
 	}
@@ -226,6 +244,10 @@ public class MainUI {
 			else return mnShow.getItem(i).getText();
 		}
 		return null;
+	}
+	
+	public void setFileWarning(boolean visible){
+		lblNoFile.setVisible(visible);
 	}
 	
 	public boolean selectView(String view){

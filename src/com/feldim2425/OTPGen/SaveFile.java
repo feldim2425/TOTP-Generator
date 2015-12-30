@@ -33,10 +33,13 @@ import com.feldim2425.OTPGen.utils.JsonHelp;
 public class SaveFile {
 	
 	private static ArrayList<EntryTag> tags = new ArrayList<EntryTag>();
-	public static File save;
+	public static File save=null;
 	public static boolean encrypt;
+	private static boolean isOpen = false;
 	
 	public static void saveDefaultFile(File f){
+		if(f==null) return;
+		isOpen=true;
 		OutputStream out = null;
 		try {
 			out = new FileOutputStream(f);
@@ -64,9 +67,12 @@ public class SaveFile {
 				e.printStackTrace();
 			}
 		}
+		isOpen=false;
 	}
 	
 	public static boolean saveAll(File f){
+		if(f==null) return false;
+		isOpen=true;
 		OutputStream out = null;
 		InputStream in = null;
 		try {
@@ -78,7 +84,10 @@ public class SaveFile {
 			
 			read.close();
 			in.close();
-			if(!json.containsKey("head") || !json.get("head").getValueType().equals(ValueType.OBJECT)) return false;
+			if(!json.containsKey("head") || !json.get("head").getValueType().equals(ValueType.OBJECT)){
+				isOpen=false;
+				return false;
+			}
 			
 			
 			JsonArrayBuilder arrb1 = Json.createArrayBuilder();
@@ -109,6 +118,7 @@ public class SaveFile {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		isOpen=false;
 		return true;
 	}
 	
@@ -202,9 +212,17 @@ public class SaveFile {
 					f.createNewFile();
 					saveDefaultFile(f);
 				}
-				if(!read(f)) return false;
+				isOpen=true;
+				if(!read(f)){
+					isOpen=false;
+					return false;
+				}
+				isOpen=false;
 				save = f;
-				if(MainUI.window != null) MainUI.window.reinitTags("#");
+				if(MainUI.window != null){
+					MainUI.window.reinitTags("#");
+					MainUI.window.setFileWarning(false);
+				}
 				return true;
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -237,5 +255,14 @@ public class SaveFile {
 			}
 		}while(!selectSave());
 		return true;
+	}
+
+	public static void closeFile() {
+		if(!isOpen){
+			resetData();
+			save = null;
+			if(MainUI.window!=null)
+				MainUI.window.setFileWarning(true);
+		}
 	}
 }

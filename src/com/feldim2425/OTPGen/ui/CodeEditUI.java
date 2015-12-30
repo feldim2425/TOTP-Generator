@@ -40,7 +40,7 @@ public class CodeEditUI extends JDialog {
 	private CodeEntry code;
 	
 	public static void start(CodeEntry entry) {
-		if(MainUI.isEditing()) return; //Return if there is already a edit Dialog
+		if(MainUI.isEditing() || SaveFile.save==null) return; //Return if there is already a edit Dialog
 		MainUI.setEditing(true);
 		try {
 			CodeEditUI dialog = new CodeEditUI(entry);
