@@ -1,0 +1,37 @@
+package com.feldim2425.optgen.codegen;
+
+import com.feldim2425.optgen.ui.MainUI;
+
+
+public class CodeTimer implements Runnable{
+
+	@Override
+	public void run() {
+		boolean run = true;
+		long lastCodeTime=CodeFactory.getTime();
+		while(run && !Thread.interrupted()){
+			try{
+				if(MainUI.window!=null && MainUI.window.tgbtnRun!=null && !MainUI.window.tgbtnRun.isSelected()){
+					//Calculate some values to save a bit of memory and CPU power. For very bad/old PC's
+					int statebar = (int) ((30D-CodeFactory.nextCodeCoutdown())*10D);	//Calculate StateBar
+					boolean regen = CodeFactory.getTime()!=lastCodeTime;	//Test if there is a new Code
+					
+					int len = CodeFactory.getClist().size();
+					for(int i=0;i<len;i++){
+						if(CodeFactory.getVisible().contains(i))
+							CodeFactory.getClist().get(i).update(statebar,regen);
+					}
+					
+					if(regen){
+						lastCodeTime = CodeFactory.getTime();
+						regen = false;
+					}
+				}
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				run=false;
+			}
+		}
+	}
+
+}
