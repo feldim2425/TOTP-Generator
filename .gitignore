@@ -1,0 +1,10 @@
+/*
+!.gitignore
+!/src
+!/resources
+!/.settings
+!.classpath
+!.project
+!pom.xml
+!LICENSE
+!README.md

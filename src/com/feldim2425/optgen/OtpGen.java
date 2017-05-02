@@ -101,6 +101,10 @@ public class OtpGen {
 		}
 	}
 
+	public static OtpGen getInstance() {
+		return INSTANCE;
+	}
+
 	public static enum ProgramState {
 		STARTING (false, true),
 		RUNNING (true, true),

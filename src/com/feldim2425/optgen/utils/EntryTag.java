@@ -1,16 +1,11 @@
 package com.feldim2425.optgen.utils;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonValue.ValueType;
-
 public class EntryTag {
-	
-	private String name;
-	private boolean stdview;
-	
-	public EntryTag(String name, boolean stdview){
+
+	private String	name;
+	private boolean	stdview;
+
+	public EntryTag(String name, boolean stdview) {
 		this.name = name;
 		this.stdview = stdview;
 	}
@@ -30,11 +25,13 @@ public class EntryTag {
 	public void setStdview(boolean stdview) {
 		this.stdview = stdview;
 	}
-	
-	public EntryTag copy(){
-		return new EntryTag(name,stdview);
+
+	public EntryTag copy() {
+		return new EntryTag(name, stdview);
 	}
-	
+
+	//@formatter:off
+	/*
 	public JsonObject toJson(){
 		JsonObjectBuilder obj = Json.createObjectBuilder();
 		obj.add("Name", this.name);
@@ -56,6 +53,7 @@ public class EntryTag {
 		tag.setName(json.getString("Name"));
 		tag.setStdview(json.getBoolean("StdView"));
 		return tag;
-	}
-	
+	}*/
+	//@formatter:on
+
 }
